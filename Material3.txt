@@ -1,0 +1,151 @@
+Web-IT-04.11.2019
+
+Werkzeugunterstützung bei der Softwareentwicklung
+•	Anforderungs-Management
+•	Konzeptions-/Design-/Entwurfsunterstützung
+•	Programmierung (IDEs)
+•	Manuelle und automatische Tests
+•	Automatisierte Prüfungen (Konventionen, Fehlerquellen…)
+•	Versionsmanagement
+•	Build-Management (automatisierte Erstellung/Bau)
+•	Manuelle und automatisierte Inbetrieb
+•	Betriebsüberwachung
+•	Dokumentationsunterstützung   
+•	Unterstützung von Kooperation und Kommunikation
+Herausforderungen beim Umgang mit Dateien
+•	Welche Dateien (Dokumente, Tabellen, Abbildungen, Quellcode, Konfigurationsbeschreibungen, Handbücher…) gehören alle zu dieser Produktversion?
+•	Habe ich/ hat jemand eine neuere Fassung dieser Datei?
+•	Wie kann ich noch ältere Fassungen zu Rate ziehen?
+•	Wie kann ich versehentliche/ falsche Änderungen ungeschehen machen?
+•	Wo ist das letzte Backup?
+•	Wie verteile ich Dateien in meinem Team?
+•	Wie bringe ich Änderungen an diesen Dateien wieder in eine gemeinsame Fassung?
+Lösung: Versionsmangement (version/revision control)
+•	Änderung an einer Datei bzw. zusammengehörige Änderungen an einer Menge von Dateien sind über die Zeit hinweg nachgehalten/ nachvollziehbar (protokollieren von Änderungen)
+•	Zusammengehörende Änderungen an einer Menge von Dateien sind einfach zu identifiezieren
+•	Ältere Fassungen von Dateien /vorherige Fassungen des ganzen Projekts stehen bei Bedarf zur Verfügung (Wiederherstellung, Archivierung von Projektständen)
+•	Verschiedene Fassungen von Dateien können verglichen werden
+•	Fragen zu Bearbeitern und Ständen können einfach beantwortet werden: Wer hat etwas wann angefasst? Wer hat woran gearbeitet?
+•	Versehentlich Gelöschtes oder Verlorengegangenes oder Geändertes kann in einer seiner letzten Fassungen problemlos rekonstruiert werden
+•	Änderungen/ Ergänzungen können einfach im Team ausgetauscht werden, so dass jeder jederzeit auf dem aktuellen Stand des Projekts ist (Koordinierung des gemeinsamen Zugriffs auf ein Projektarchiv)
+•	Mehrere Entwicklungszweige („branches“) können unabhängig voneinander gleichzeitig vorangetrieben werden
+Realisierungsmöglichkeiten für das Versionsmanagement / Versionsmanagementsysteme/ version control systems)
+•	Lokal (ehemals SCCS, RCS) 
+ 
+•	Zentral (z.B. CVS, Subversion) 
+?	Gemeinsamer Server
+?	Clients beziehen den letzten Stand
+ 
+•	Verteilt (distributed -> z.B. git, Mercurial)
+?	Clients verfügen über vollständige Kopie des „remote repository“ (entfernter Ablage auf dem Server)
+?	Jeder Client hat damit ein „lokales repository“ des Projekts
+?	D.h. Backup ? robuster gegenüber Serverausfällen
+?	Clients können bei remotes bei verschiedenen Servern beziehen, damit z.B. in verschiedenen Projekten beteiligt sein
+?	Im Prinzip könnte jeder Client auch die Server-Rolle einnehmen
+ 
+
+
+Git-Konzepte:
+•	Git ist Standardwerkzeug, dass in der Softwareentwicklung und Webdesign verwendet wird
+•	Wurzeln in 2005 bei Linus Torvalds im Linux-Projekt
+•	https://git-scm.com
+•	Heute de facto das Standard-VCS für Projekte/ Softwareentwicklung mit mehreren Personen
+•	Eigenschaften:
+?	Einfach zu nutzen
+?	Sehr schnell 
+?	Sehr effizient auch in großen Projekten
+?	Sehr gute Unterstützung für die Handhabung von Entwicklungszweigen („branches“)
+Git-Konzepte: Änderungen und Schnappschüsse:
+•	Früher in VCS Bezug auf Deltas: Im Repository: Aktueller Stand = initiale Datei + Folge von Änderungen
+•	Git arbeitet mit Folge von Schnappschüssen (Kopie der Datei): Im Repository: Aktueller Stand = aktueller Schnappschuss (stream of snapshots)
+•	Begriff: „commit“ bedeutet (zusammengehörige Änderungen (in ggfs. Mehreren Dateien) als gültig kennzeichnen und zusammen einspielen
+•	Git: jeder Commit führt dazu, dass ein Schnappschuss aller Dateien gemacht wird und eine Referenz dazu für die Version notiert wird
+•	Schnappschüsse erfolgen nur für geänderte Dateien, ansonsten wird die Referenz auf den vorhandenen Schnappschuss verwendet
+ 
+ 
+Git-Konzepte: lokales Arbeiten, Prüfsummen, kein Löschen
+•	Die meisten git-Arbeiten benötigen nur lokale Dateien und keine Netzwerkkonnektivität
+?	Das gesamte Repository ist einschließlich seiner Historie lokal vorhanden
+•	Eigene Änderungen werden durch ein Commit im lokalen (eigenen) Repository gespeichert
+•	Fast alle Git-Funktionen fügen der Dateienbasis nur hinzu und löschen nichts. Damit ist alles „undoable“, auch nicht mehr sichtbares
+•	Vor dem Speichern wird alles in Git mit Prüfsummen versehen („mathematische Fingerabdrücke“). Damit erkennt Git alle Fingerabdrücke
+•	Bezüge geschehen über diese Prüfsummen. Dateien werden statt mit ihrem Namen über diese Prüfsummen als Namen gespeichert. Gleiche Datei = Gleicher Hash
+•	Jeder Commit wird durch einen Hash (über alle Dateien) identifiziert. Gleiche Menge von Dateien = Gleicher Hash
+Git-Konzepte: die drei Zustände einer Datei (three states)
+•	Modified: man hat die Datei geändert aber noch nicht zur Datenbasis committed
+•	Staged: die geänderte Datei wurde in ihrer aktuellen Fassung markiert/ festgelegt, in den nächsten Commit-Schnappschuss aufgenommen zu werden
+•	Committed: die Änderungen wurden sicher in die Datenbasis (die lokale Ablage) übernommen
+•	Bereiche eines git-Projekts: 
+?	Arbeitsordner (working directory) ein Checkout einer Version des Projekts, zur Benutzung oder Änderung
+?	(Ablagevorbereitungsbereich) ? staging area; sammelt Informationen, was in den nächsten Commit kommen soll
+?	.git-Ordner (Repository): alle Metadaten und die Objektdatenbank des Projekts
+ 
+Git-Konzepte: Tags (übersetzt vllt. Etiketten)
+•	Statt Dateinamen zu ergänzen wie 
+Konzept-Final-3.4.txt
+Konzept-Final-3.4-reviewed-Thomas.txt
+Werden tags benutzt
+•	Tags werden beim Commit (oder nachträglich) vergeben
+•	Sie kennzeichnen, z.B. Versionen; Bearbeitungszustände
+•	Tags können als Filter / Selektionskriterium bei vielen Kommandos genutzt werden
+Git-Konzepte: Historie als gerichteter azyklischer Graph
+•	Ein Commit beschreibt Änderungen basierend auf einem Zustand im Repository
+•	Jeder Commit ändert den Zustand im Repository (einiges bleibt gleich, einiges ist neu/geändert)
+•	Zustandsänderungen sind also durch eine Folge von Commits beschrieben
+•	Jeder Commit bezieht sich auf den Vorgänger Zustand, den er dann ändert
+ 
+ Git-Konzepte: Interne Ablageprinzipien
+•	Beispiel: Git-Repo enthält 5 Objekte
+?	3 blobs („binary large objects“) stehen für die Inhalte von 3 Dateien
+?	1 „tree“- Element als Inhaltsverzeichnis des Ordners 
+?	1 „commit“-Element mit Metadaten zum Commit
+ 
+Git-Konzepte: Interne Ablageprinzipien
+•	Beispiel: 3 commits 
+?	Vorgänger
+?	Schnappschuss (aller Dateien zum Commit-Zeitpunkt)
+ 
+Git-Konzepte: Referenzen, HEAD
+•	Referenz (Zeiger) ist ein Identifier/Bezeichner/Name, mit dem auf einem Commit gezeigt wird (Name für Commit), enthält die SHA-1-Prüfsumme des Commits (sein Dateiname)
+•	In .git/refs verwaltet
+•	Begriff Head: eine besondere Referenz, zeigt auf den letzten Commit (im aktuellen Branch)
+ 
+Git-Konzepte: Zweige (branches)
+•	Begriff Zweig/ branch: eine Referenz auf ein Commit
+•	NICHT der Abzweigung (sweg) im Graph
+ 
+Git-Konzepte: remote/origin/clone
+•	Remote = ein entferntes Repository
+?	Server
+?	Rechner der Kollegen
+?	Eigener Rechner
+?	…
+•	Clone -Kommando, remote zum neuen local
+•	Origin = Quelle
+•	Fall Origin= remote
+•	Synchronisierung: git fetch/git push/ git pull
+•	Referenz auf remote verwalten: git remote
+ 
+Git-Konzepte: Synchronisation im Überblick
+ 
+Git-Konzepte: wo ist das remote Repository? Erinnerung
+ 
+Git-basierte Onlinedienste:
+•	Unterschiedliche Merkmale, z.B. 
+?	Ort für (remote) Repositories (private und öffentliche)
+?	Ticketsystem/Bugtracker
+?	Dokumentation
+?	Social Coding
+?	Automatisierung (robots, Pipeline für Continuous Integration / Continuous Deployment)
+?	Filehosting/Websitehosting
+•	Prominente Vertreter:
+?	GitHub
+?	GitLab
+?	BitBucket
+Git-Kommandos:
+Branching-Modelle:
+Branching-Modell von Driessen: Hauptzweige
+ 
+ 
+ 
+
